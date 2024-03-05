@@ -10,38 +10,17 @@
 # ✔ Любое действие выводит сумму денег
 
 class atm:
+    balance = 0
 
-    balance = None
-
-    def add_balance(self, balance, summ_add):  # пополнить баланс
-        if summ_add % 50:
-            balance += summ_add
+    def add_balance(self, add_money):
+        global balance
+        if add_money % 50:
+            balance += add_money
             return balance
         else:
-            return 'Ошибка. Сумма пополнения должна быть кратна 50'
+            return 'Введите число кратное 50'
+
+    def remove_balance(self, remove_money):
+        pass
 
 
-    def take_off(self, summ_general, summ_take_off): # снять с баланса
-        if summ_take_off % 50 & summ_take_off >= summ_general:
-            summ_general -= summ_take_off
-            return summ_general
-
-
-    def exit(self, summ_general): # посмотреть баланс
-        return summ_general
-
-
-    summ = 0
-    while True:
-        action = int(input('Что вы хотите сделать?: \n'
-                       '1 - выйти.\n'
-                       '2 - пополнить баланс.\n'
-                       '3 - снять деньги.\n'))
-        if action == 1:
-            print(exit(summ))
-        elif action == 2:
-            summ_add = int(input("На какую сумму пополнить?"))
-            print(add_balance(summ, summ_add))
-        elif action == 3:
-            summ_take_off = float("Какую суммы вы хотитите снять?")
-            print(take_off(summ, summ_take_off))
