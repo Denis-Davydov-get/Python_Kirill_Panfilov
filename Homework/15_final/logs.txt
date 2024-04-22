@@ -1,0 +1,3 @@
+INFO:__main__:C:\Users\slim2\iCloudDrive\My_learning\Geekbrains\3. Специализация\Введение в Python\Записи лекций all files are parsed.
+INFO:__main__:C:\Users\slim2\iCloudDrive\My_learning\Geekbrains\3. Специализация\Введение в Python\Записи лекций all files are parsed.
+INFO:__main__:C:\Users\slim2\iCloudDrive\My_learning\Geekbrains\3. Специализация\Введение в Python\Python_trening all files are parsed.
