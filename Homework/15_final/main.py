@@ -6,30 +6,54 @@
 # ○ флаг каталога,
 # ○ название родительского каталога.
 # В процессе сбора сохраните данные в текстовый файл используя логирование.
-
 from collections import namedtuple
+import argparse
 import os
 import logging
-import json
+import datetime
 
-logging.basicConfig(filename='logs.txt', filemode='a+', encoding='utf-8', level=logging.INFO)
+FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+#
+logging.basicConfig(filename='logs.log',
+                    level=logging.INFO,
+                    format=FORMAT,
+                    datefmt='%d/%m/%Y %I:%M:%S',
+                    encoding='utf-8')
 logger = logging.getLogger(__name__)
 
-path_input = input('Input the path of your file: ')
-
-def parse_str(path_input:str):
-    '''Проверят файл или папка в вводе и кладет все в json файл, в виде словаря '''
-    dict_path = {}
-    for root, folders, files in os.walk(path_input):
-        for folder in folders:
-            dict_path[folder] = [files]
-    with open("list_dir.json", 'w', encoding='utf-8') as f:
-        f.write(json.dumps(dict_path, f, indent=4, ensure_ascii=False))
-    logger.info(f'{path_input} all files are parsed.')
+# Создаем parser для ввода через консоль
+parser = argparse.ArgumentParser(description='Содержимое папки')
+parser.add_argument('-path', type=str)
+args = parser.parse_args()
+# Создаем именованные списки для заполнения для файлов и директорий
+Tuple_path_file = namedtuple('Tuple_path_file', ['name', 'extension', 'directory', 'parents_directory'])
+Tuple_path_dir = namedtuple('Tuple_path_dir', ['name_directory', 'directory_flag', 'parents_directory'])
 
 
-def file_or_dir(input_path: str):
-    if os.path.isfile(input_path):
-        logger.info(f'{input_path} is not a directory.')
-    elif os.path.isdir(input_path):
+def parse_str(path_input: str) -> namedtuple:
+    '''Проверят файл или папка на входе и логирует в файл, в формате namedtuple '''
+    if os.path.exists(path_input):
+        if os.path.isfile(path_input):
+            name_file = os.path.basename(path_input).split(".")[0]
+            extension = path_input.split(".")[-1]
+            directory = os.path.isdir(path_input)
+            parents_directory = os.path.dirname(path_input).split("\\")[-1]
+            path_tuple_file = Tuple_path_file(name_file, extension, directory, parents_directory)
+            logger.info(f'{path_tuple_file}')
+            return path_tuple_file
 
+        elif os.path.isdir(path_input):
+            name_directory = os.path.basename(path_input)
+            directory_flag = os.path.isdir(path_input)
+            parents_directory = os.path.dirname(path_input).split("\\")[-1]
+            path_tuple_dir = Tuple_path_dir(name_directory, directory_flag, parents_directory)
+            logger.info(f'{path_tuple_dir}')
+            return path_tuple_dir
+    else:
+        raise TypeError(logger.error(f'folder {path_input} not found'))
+
+
+if __name__ == '__main__':
+    # path_input = input('Input the path of your file: ')
+    # parse_str(path_input)
+    parse_str(args.path) # запуск через терминал
