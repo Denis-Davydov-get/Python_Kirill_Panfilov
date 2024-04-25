@@ -10,7 +10,6 @@ from collections import namedtuple
 import argparse
 import os
 import logging
-import datetime
 
 FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 #
@@ -23,7 +22,7 @@ logger = logging.getLogger(__name__)
 
 # Создаем parser для ввода через консоль
 parser = argparse.ArgumentParser(description='Содержимое папки')
-parser.add_argument('-path', type=str)
+parser.add_argument('path', type=str, help='enter path for parse, type "str"')
 args = parser.parse_args()
 # Создаем именованные списки для заполнения для файлов и директорий
 Tuple_path_file = namedtuple('Tuple_path_file', ['name', 'extension', 'directory', 'parents_directory'])
